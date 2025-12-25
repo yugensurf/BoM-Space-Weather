@@ -18,8 +18,8 @@ jobs:
         with:
           node-version: "20"
 
-      - run: npm ci || true
-      - run: npm run update
+      - name: Fetch latest BoM data
+        run: node scripts/update-data.mjs
         env:
           SPACEWEATHER_API_KEY: ${{ secrets.SPACEWEATHER_API_KEY }}
 
