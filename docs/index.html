@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aurora Watch AU</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 22px; max-width: 980px; }
+    h1 { margin: 0 0 6px; }
+    .sub { color: #666; font-size: 12px; margin-bottom: 14px; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card { border: 1px solid #e6e6e6; border-radius: 14px; padding: 14px; }
+    .k { font-size: 12px; color: #666; }
+    .big { font-size: 26px; font-weight: 750; margin-top: 6px; }
+    .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #f3f3f3; font-size: 12px; margin: 4px 6px 0 0; }
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    select { padding: 8px 10px; border-radius: 10px; border: 1px solid #ddd; }
+    .note { margin-top: 14px; color: #666; font-size: 12px; line-height: 1.4; }
+    canvas { margin-top: 14px; }
+    ul { margin: 8px 0 0; padding-left: 18px; }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <h1>Aurora Watch AU</h1>
+  <div class="sub" id="updated">Loading…</div>
+
+  <div class="row">
+    <label class="k" for="spot">Cloud cover spot:</label>
+    <select id="spot"></select>
+    <span class="k" id="spotMeta"></span>
+  </div>
+
+  <div class="grid" style="margin-top:10px;">
+    <div class="card">
+      <div class="k">Sydney / NSW (tonight)</div>
+      <div class="big" id="verdictNsw">—</div>
+      <div class="k" id="reasonNsw"></div>
+    </div>
+
+    <div class="card">
+      <div class="k">Tasmania (tonight)</div>
+      <div class="big" id="verdictTas">—</div>
+      <div class="k" id="reasonTas"></div>
+    </div>
+
+    <div class="card">
+      <div class="k">Latest K-index (AU region)</div>
+      <div class="big" id="kindex">—</div>
+      <div class="k" id="ktime"></div>
+    </div>
+
+    <div class="card">
+      <div class="k">BoM Aurora Notices</div>
+      <div id="notices"></div>
+      <div class="k" id="noticeDetail"></div>
+    </div>
+
+    <div class="card">
+      <div class="k">Cloud cover next 6 hours (selected spot)</div>
+      <div class="big" id="cloud6h">—</div>
+      <div class="k" id="cloudWhen"></div>
+    </div>
+
+    <div class="card">
+      <div class="k">Easy car-access options (south of Sydney)</div>
+      <div id="places"></div>
+    </div>
+  </div>
+
+  <canvas id="kChart" height="120"></canvas>
+  <canvas id="cloudChart" height="120"></canvas>
+
+  <div class="note">
+    BoM notes: higher K-index increases the chance of aurora being visible at lower latitudes; alerts/watches/outlooks describe when conditions are favourable. 
+    Use a dark spot with a clear southern horizon and obey park gates/signage.
+  </div>
+
+<script>
+const SPOTS = [
+  {
+    name: "Bald Hill Lookout (Otford)",
+    lat: -34.2368, lon: 150.9894,
+    meta: "Otford Rd / Lawrence Hargrave Dr"
+  },
+  {
+    name: "Stanwell Park Beach (car park)",
+    lat: -34.2237, lon: 150.9917,
+    meta: "Stanwell Ave, Stanwell Park"
+  },
+  {
+    name: "Coalcliff Beach (car park)",
+    lat: -34.2396, lon: 150.9977,
+    meta: "Lawrence Hargrave Dr, Coalcliff"
+  },
+  {
+    name: "Sea Cliff Bridge (viewing stop)",
+    lat: -34.2448, lon: 150.9989,
+    meta: "Lawrence Hargrave Dr, Coalcliff"
+  },
+  {
+    name: "Seven Mile Beach (Gerroa)",
+    lat: -34.8042, lon: 150.8240,
+    meta: "Crooked River Rd, Gerroa"
+  }
+];
+
+function pad(n){ return String(n).padStart(2,"0"); }
+function fmtSydneyFromUtcString(utcStr){
+  // utcStr is "YYYY-MM-DD HH:mm:ss" (UTC)
+  const iso = utcStr.replace(" ","T") + "Z";
+  return new Date(iso).toLocaleString("en-AU", { timeZone: "Australia/Sydney" });
+}
+
+function pickNotice(payload){
+  // Preference: alert > watch > outlook
+  if (payload.aurora.alert && payload.aurora.alert.length) return { type: "Alert", obj: payload.aurora.alert[0] };
+  if (payload.aurora.watch && payload.aurora.watch.length) return { type: "Watch", obj: payload.aurora.watch[0] };
+  if (payload.aurora.outlook && payload.aurora.outlook.length) return { type: "Outlook", obj: payload.aurora.outlook[0] };
+  return null;
+}
+
+function verdictForNsw(latBand, kVal){
+  // Simple heuristic: NSW usually needs "low" or "equatorial" bands OR very high K.
+  if (latBand === "equatorial") return ["GO", "Equatorial band (very rare) — NSW should be possible if skies are clear."];
+  if (latBand === "low") return ["MAYBE", "Low band — try south-facing coast away from city lights if skies are clear."];
+  if (kVal >= 8) return ["MAYBE", "Very high K — NSW can be possible under dark skies."];
+  return ["NO", "Most events stay too far south for NSW."];
+}
+
+function verdictForTas(latBand, kVal){
+  if (latBand === "high" || latBand === "mid" || latBand === "low" || latBand === "equatorial") {
+    return ["GO", `${latBand} band — Tasmania has the best odds in Australia (clear skies needed).`];
+  }
+  if (kVal >= 5) return ["MAYBE", "Moderate activity — Tasmania sometimes works if clouds cooperate."];
+  return ["NO", "Low activity."];
+}
+
+let kChart, cloudChart;
+
+async function loadBom(){
+  const res = await fetch("./data/latest.json", { cache: "no-store" });
+  if (!res.ok) throw new Error("Couldn't load ./data/latest.json yet. Wait for the first GitHub Action run.");
+  return res.json();
+}
+
+async function loadCloud(lat, lon){
+  // Open-Meteo Forecast API (hourly cloudcover). Official docs list cloud cover variables and /v1/forecast endpoint.
+  const url = new URL("https://api.open-meteo.com/v1/forecast");
+  url.searchParams.set("latitude", lat);
+  url.searchParams.set("longitude", lon);
+  url.searchParams.set("hourly", "cloudcover");
+  url.searchParams.set("forecast_days", "2");
+  url.searchParams.set("timezone", "Australia/Sydney");
+  const res = await fetch(url.toString(), { cache: "no-store" });
+  if (!res.ok) throw new Error("Cloud fetch failed");
+  return res.json();
+}
+
+function renderKChart(points){
+  const ctx = document.getElementById("kChart");
+  const labels = points.map(p => fmtSydneyFromUtcString(p.valid_time_utc).slice(0, -3)); // trim seconds
+  const values = points.map(p => p.index);
+
+  if (kChart) kChart.destroy();
+  kChart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets: [{ label: "K-index (AU region) — last 72h", data: values }] },
+    options: { responsive: true, scales: { y: { min: 0, max: 9, ticks: { stepSize: 1 } } } }
+  });
+}
+
+function renderCloudChart(hourly){
+  const ctx = document.getElementById("cloudChart");
+  const labels = hourly.time.map(t => t.replace("T"," ").slice(5,16)); // MM-DD HH:mm
+  const values = hourly.cloudcover;
+
+  if (cloudChart) cloudChart.destroy();
+  cloudChart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets: [{ label: "Cloud cover (%) — next 48h", data: values }] },
+    options: { responsive: true, scales: { y: { min: 0, max: 100 } } }
+  });
+}
+
+function setPlaces(){
+  const places = document.getElementById("places");
+  const items = SPOTS.map(s => `<li><strong>${s.name}</strong><br><span class="k">${s.meta}</span></li>`).join("");
+  places.innerHTML = `<ul>${items}</ul>`;
+}
+
+async function main(){
+  // Populate dropdown
+  const sel = document.getElementById("spot");
+  SPOTS.forEach((s, i) => {
+    const opt = document.createElement("option");
+    opt.value = String(i);
+    opt.textContent = s.name;
+    sel.appendChild(opt);
+  });
+
+  setPlaces();
+
+  // Load BoM data
+  const bom = await loadBom();
+  document.getElementById("updated").textContent = `Updated (UTC): ${bom.generated_at_utc}`;
+
+  const latest = bom.latest_k;
+  const kVal = latest?.index ?? null;
+  document.getElementById("kindex").textContent = (kVal === null) ? "—" : String(kVal);
+  document.getElementById("ktime").textContent = latest?.valid_time_utc ? ("Valid (Sydney): " + fmtSydneyFromUtcString(latest.valid_time_utc)) : "";
+
+  const notice = pickNotice(bom);
+  const noticesEl = document.getElementById("notices");
+  const detailEl = document.getElementById("noticeDetail");
+
+  if (!notice) {
+    noticesEl.innerHTML = `<span class="pill">No current alert/watch/outlook</span>`;
+    detailEl.textContent = "";
+  } else {
+    const { type, obj } = notice;
+    noticesEl.innerHTML = `<span class="pill">${type}</span> <span class="pill">lat band: ${obj.lat_band}</span> <span class="pill">Kaus: ${obj.k_aus}</span>`;
+    const until = obj.valid_until ? fmtSydneyFromUtcString(obj.valid_until) : "";
+    detailEl.textContent = obj.description ? `${obj.description}${until ? " | Valid until (Sydney): " + until : ""}` : "";
+  }
+
+  const latBand = notice?.obj?.lat_band ?? null;
+  const [nVerdict, nReason] = verdictForNsw(latBand, kVal ?? 0);
+  const [tVerdict, tReason] = verdictForTas(latBand, kVal ?? 0);
+  document.getElementById("verdictNsw").textContent = nVerdict;
+  document.getElementById("reasonNsw").textContent = nReason;
+  document.getElementById("verdictTas").textContent = tVerdict;
+  document.getElementById("reasonTas").textContent = tReason;
+
+  renderKChart(bom.k_last_72h || []);
+
+  async function refreshCloud(){
+    const spot = SPOTS[Number(sel.value)];
+    document.getElementById("spotMeta").textContent = spot.meta;
+    const cloud = await loadCloud(spot.lat, spot.lon);
+    const hourly = cloud.hourly;
+    if (!hourly || !hourly.time || !hourly.cloudcover) return;
+
+    // next 6 hours average from "now"
+    const now = new Date();
+    const idx = hourly.time.findIndex(t => new Date(t) >= now);
+    const start = Math.max(0, idx);
+    const end = Math.min(hourly.cloudcover.length, start + 6);
+    const slice = hourly.cloudcover.slice(start, end);
+    const avg = slice.length ? Math.round(slice.reduce((a,b)=>a+b,0) / slice.length) : null;
+
+    document.getElementById("cloud6h").textContent = (avg === null) ? "—" : `${avg}%`;
+    document.getElementById("cloudWhen").textContent = slice.length ? `From ${hourly.time[start].replace("T"," ").slice(0,16)} to ${hourly.time[end-1].replace("T"," ").slice(0,16)} (Sydney)` : "";
+
+    renderCloudChart(hourly);
+  }
+
+  sel.addEventListener("change", refreshCloud);
+  await refreshCloud();
+}
+
+main().catch(err => {
+  document.getElementById("updated").textContent = "Error: " + err.message;
+  console.error(err);
+});
+</script>
+</body>
+</html>
