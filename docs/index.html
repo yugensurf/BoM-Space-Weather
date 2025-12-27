@@ -4,18 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Aurora Watch AU</title>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Map (Leaflet + OpenStreetMap) -->
   <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-  crossorigin=""
-/>
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-  crossorigin=""
-></script>
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
 
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 22px; max-width: 980px; }
@@ -32,6 +35,16 @@
     canvas { margin-top: 14px; }
     ul { margin: 8px 0 0; padding-left: 18px; }
     a { color: inherit; }
+
+    /* Map + help section */
+    #spotMap {
+      height: 320px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .sectionTitle { margin: 0 0 10px; font-size: 16px; }
+    .helpGrid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
   </style>
 </head>
 <body>
@@ -77,6 +90,10 @@
 
     <div class="card">
       <div class="k">Easy car-access options (south of Sydney)</div>
+      <div id="spotMap" aria-label="Map of viewing spots"></div>
+      <div class="k" style="margin-top:8px;">
+        Tap a marker for directions. Changing the cloud cover spot will also focus the map.
+      </div>
       <div id="places"></div>
     </div>
   </div>
@@ -84,9 +101,50 @@
   <canvas id="kChart" height="120"></canvas>
   <canvas id="cloudChart" height="120"></canvas>
 
-  <div class="note">
-    BoM notes: higher K-index increases the chance of aurora being visible at lower latitudes; alerts/watches/outlooks describe when conditions are favourable. 
-    Use a dark spot with a clear southern horizon and obey park gates/signage.
+  <div class="card" style="margin-top:12px;">
+    <h2 class="sectionTitle">How to read this (and what to do when it’s “GO”)</h2>
+
+    <div class="helpGrid">
+      <div>
+        <div class="k"><strong>1) “BoM Aurora Notices” card</strong></div>
+        <ul>
+          <li><strong>Alert</strong> is strongest (conditions happening / imminent), then <strong>Watch</strong>, then <strong>Outlook</strong>.</li>
+          <li>If there’s <strong>no notice</strong>, NSW is usually a no-go unless the K-index spikes unusually high.</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="k"><strong>2) K-index chart (last 72h)</strong></div>
+        <ul>
+          <li>Higher = stronger geomagnetic activity.</li>
+          <li><strong>Tasmania</strong> can work at lower values than NSW.</li>
+          <li><strong>NSW</strong> usually needs a rare event (often a very high spike) plus clear skies and dark horizon.</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="k"><strong>3) Cloud chart (next 48h) + “Cloud cover next 6 hours”</strong></div>
+        <ul>
+          <li>Lower cloud % is better. Treat <strong>&lt;30–40%</strong> as “worth trying”.</li>
+          <li>Even with great space weather, <strong>cloud / haze / sea mist</strong> can wipe it out.</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="k"><strong>4) If it says GO / MAYBE — do this</strong></div>
+        <ul>
+          <li>Pick the spot with the <strong>lowest cloud</strong> + the cleanest <strong>southern horizon</strong>.</li>
+          <li>Go during <strong>9pm–2am</strong> (often best nearer midnight).</li>
+          <li>Bring: warm layer, phone tripod, and be ready for “on/off” bursts.</li>
+          <li>Moon: darker is better. Check your weather app for <strong>moonrise/moonset</strong> and <strong>illumination</strong>.</li>
+          <li>Safety: stay on public access areas; obey signs and any park gate rules.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:10px;">
+      Data sources: BoM space weather (aurora notices + K-index) and Open-Meteo (cloud cover for selected spot).
+    </div>
   </div>
 
 <script>
@@ -151,6 +209,62 @@ function verdictForTas(latBand, kVal){
 
 let kChart, cloudChart;
 
+/* =======================
+   Map
+   ======================= */
+let spotMap = null;
+let spotMarkers = [];
+
+function mapsLinks(lat, lon, label) {
+  const q = encodeURIComponent(label);
+  const ll = `${lat},${lon}`;
+  return {
+    google: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ll)}`,
+    apple: `https://maps.apple.com/?ll=${encodeURIComponent(ll)}&q=${q}`
+  };
+}
+
+function initMap() {
+  const el = document.getElementById("spotMap");
+  if (!el || typeof L === "undefined") return;
+
+  // Create once
+  if (spotMap) return;
+
+  spotMap = L.map(el, { scrollWheelZoom: false });
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(spotMap);
+
+  const group = L.featureGroup().addTo(spotMap);
+
+  spotMarkers = SPOTS.map((s) => {
+    const links = mapsLinks(s.lat, s.lon, s.name);
+    const html = `
+      <strong>${s.name}</strong><br>
+      <span class="k">${s.meta}</span><br>
+      <a href="${links.google}" target="_blank" rel="noopener">Directions (Google)</a>
+      &nbsp;·&nbsp;
+      <a href="${links.apple}" target="_blank" rel="noopener">Directions (Apple)</a>
+    `;
+    const m = L.marker([s.lat, s.lon]).bindPopup(html);
+    m.addTo(group);
+    return m;
+  });
+
+  spotMap.fitBounds(group.getBounds().pad(0.18));
+}
+
+function focusSpotOnMap(i) {
+  if (!spotMap || !spotMarkers[i]) return;
+  const s = SPOTS[i];
+  spotMap.setView([s.lat, s.lon], 12, { animate: true });
+  spotMarkers[i].openPopup();
+}
+
+/* =======================
+   Data loaders
+   ======================= */
 async function loadBom(){
   const res = await fetch("./data/latest.json", { cache: "no-store" });
   if (!res.ok) throw new Error("Couldn't load ./data/latest.json yet. Wait for the first GitHub Action run.");
@@ -158,7 +272,7 @@ async function loadBom(){
 }
 
 async function loadCloud(lat, lon){
-  // Open-Meteo Forecast API (hourly cloudcover). Official docs list cloud cover variables and /v1/forecast endpoint.
+  // Open-Meteo Forecast API (hourly cloudcover).
   const url = new URL("https://api.open-meteo.com/v1/forecast");
   url.searchParams.set("latitude", lat);
   url.searchParams.set("longitude", lon);
@@ -170,6 +284,9 @@ async function loadCloud(lat, lon){
   return res.json();
 }
 
+/* =======================
+   Charts / UI
+   ======================= */
 function renderKChart(points){
   const ctx = document.getElementById("kChart");
   const labels = points.map(p => fmtSydneyFromUtcString(p.valid_time_utc).slice(0, -3)); // trim seconds
@@ -198,7 +315,20 @@ function renderCloudChart(hourly){
 
 function setPlaces(){
   const places = document.getElementById("places");
-  const items = SPOTS.map(s => `<li><strong>${s.name}</strong><br><span class="k">${s.meta}</span></li>`).join("");
+  const items = SPOTS.map((s) => {
+    const links = mapsLinks(s.lat, s.lon, s.name);
+    return `
+      <li>
+        <strong>${s.name}</strong><br>
+        <span class="k">${s.meta}</span><br>
+        <span class="k">
+          <a href="${links.google}" target="_blank" rel="noopener">Directions (Google)</a>
+          ·
+          <a href="${links.apple}" target="_blank" rel="noopener">Directions (Apple)</a>
+        </span>
+      </li>
+    `;
+  }).join("");
   places.innerHTML = `<ul>${items}</ul>`;
 }
 
@@ -213,6 +343,7 @@ async function main(){
   });
 
   setPlaces();
+  initMap(); // map appears immediately
 
   // Load BoM data
   const bom = await loadBom();
@@ -248,8 +379,13 @@ async function main(){
   renderKChart(bom.k_last_72h || []);
 
   async function refreshCloud(){
-    const spot = SPOTS[Number(sel.value)];
+    const spotIndex = Number(sel.value);
+    const spot = SPOTS[spotIndex];
     document.getElementById("spotMeta").textContent = spot.meta;
+
+    // Focus map + open marker
+    focusSpotOnMap(spotIndex);
+
     const cloud = await loadCloud(spot.lat, spot.lon);
     const hourly = cloud.hourly;
     if (!hourly || !hourly.time || !hourly.cloudcover) return;
@@ -263,7 +399,9 @@ async function main(){
     const avg = slice.length ? Math.round(slice.reduce((a,b)=>a+b,0) / slice.length) : null;
 
     document.getElementById("cloud6h").textContent = (avg === null) ? "—" : `${avg}%`;
-    document.getElementById("cloudWhen").textContent = slice.length ? `From ${hourly.time[start].replace("T"," ").slice(0,16)} to ${hourly.time[end-1].replace("T"," ").slice(0,16)} (Sydney)` : "";
+    document.getElementById("cloudWhen").textContent = slice.length
+      ? `From ${hourly.time[start].replace("T"," ").slice(0,16)} to ${hourly.time[end-1].replace("T"," ").slice(0,16)} (Sydney)`
+      : "";
 
     renderCloudChart(hourly);
   }
@@ -276,7 +414,6 @@ main().catch(err => {
   document.getElementById("updated").textContent = "Error: " + err.message;
   console.error(err);
 });
-
 </script>
 </body>
 </html>
