@@ -36,7 +36,7 @@
     }
     @media (min-width: 960px) {
       .grid { grid-template-columns: repeat(4, 1fr); }
-      /* On desktop: map spans cols 2-4, so its right edge aligns with the BoM card */
+      /* On desktop: map spans cols 2-4 */
       .mapCard { grid-column: 2 / -1; }
     }
     /* On smaller screens: map takes full width */
@@ -53,9 +53,23 @@
     ul { margin: 8px 0 0; padding-left: 18px; }
     a { color: inherit; }
 
+    /* Buttons */
+    button {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background: #fafafa;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btnRow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .planBox { margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
+    .muted { color: #666; font-size: 12px; }
+
     /* Map + help section */
     #spotMap {
-      height: 380px; /* taller so it feels less cramped */
+      height: 380px;
       border-radius: 12px;
       overflow: hidden;
       margin-top: 10px;
@@ -97,6 +111,18 @@
       <div class="k">BoM Aurora Notices</div>
       <div id="notices"></div>
       <div class="k" id="noticeDetail"></div>
+    </div>
+
+    <!-- NEW: Tonight Plan card -->
+    <div class="card">
+      <div class="k">Tonight plan</div>
+      <div class="big" id="planStatus">—</div>
+      <div class="k" id="planHint"></div>
+      <div class="btnRow">
+        <button id="planBtn" disabled>Build tonight’s plan</button>
+        <button id="planUseBestBtn" disabled>Use recommended spot</button>
+      </div>
+      <div id="planOut" class="planBox" style="display:none;"></div>
     </div>
 
     <div class="card">
@@ -151,10 +177,9 @@
       <div>
         <div class="k"><strong>4) If it says GO / MAYBE — do this</strong></div>
         <ul>
-          <li>Pick the spot with the <strong>lowest cloud</strong> + cleanest <strong>southern horizon</strong>.</li>
+          <li>Tap <strong>Build tonight’s plan</strong> → follow the checklist + directions.</li>
           <li>Go during <strong>9pm–2am</strong> (often best nearer midnight).</li>
-          <li>Bring: warm layer, phone tripod, and be ready for “on/off” bursts.</li>
-          <li>Moon: darker is better. Check your weather app for <strong>moonrise/moonset</strong> and <strong>illumination</strong>.</li>
+          <li>Moon: darker is better. Check your weather app for <strong>moonrise/moonset</strong> + <strong>illumination</strong>.</li>
           <li>Safety: public access areas only; obey signs and any gate rules.</li>
         </ul>
       </div>
@@ -167,36 +192,29 @@
 
 <script>
 const SPOTS = [
-  {
-    name: "Bald Hill Lookout (Otford)",
-    lat: -34.2368, lon: 150.9894,
-    meta: "Otford Rd / Lawrence Hargrave Dr"
-  },
-  {
-    name: "Stanwell Park Beach (car park)",
-    lat: -34.2237, lon: 150.9917,
-    meta: "Stanwell Ave, Stanwell Park"
-  },
-  {
-    name: "Coalcliff Beach (car park)",
-    lat: -34.2396, lon: 150.9977,
-    meta: "Lawrence Hargrave Dr, Coalcliff"
-  },
-  {
-    name: "Sea Cliff Bridge (viewing stop)",
-    lat: -34.2448, lon: 150.9989,
-    meta: "Lawrence Hargrave Dr, Coalcliff"
-  },
-  {
-    name: "Seven Mile Beach (Gerroa)",
-    lat: -34.8042, lon: 150.8240,
-    meta: "Crooked River Rd, Gerroa"
-  }
+  { name: "Bald Hill Lookout (Otford)", lat: -34.2368, lon: 150.9894, meta: "Otford Rd / Lawrence Hargrave Dr" },
+  { name: "Stanwell Park Beach (car park)", lat: -34.2237, lon: 150.9917, meta: "Stanwell Ave, Stanwell Park" },
+  { name: "Coalcliff Beach (car park)", lat: -34.2396, lon: 150.9977, meta: "Lawrence Hargrave Dr, Coalcliff" },
+  { name: "Sea Cliff Bridge (viewing stop)", lat: -34.2448, lon: 150.9989, meta: "Lawrence Hargrave Dr, Coalcliff" },
+  { name: "Seven Mile Beach (Gerroa)", lat: -34.8042, lon: 150.8240, meta: "Crooked River Rd, Gerroa" }
 ];
 
 function fmtSydneyFromUtcString(utcStr){
   const iso = utcStr.replace(" ","T") + "Z";
   return new Date(iso).toLocaleString("en-AU", { timeZone: "Australia/Sydney" });
+}
+function fmtSydneyFromLocalISO(localIsoStr){
+  // localIsoStr = "YYYY-MM-DDTHH:mm"
+  return new Date(localIsoStr).toLocaleString("en-AU", { timeZone: "Australia/Sydney" });
+}
+function isoLocal(d){
+  // YYYY-MM-DDTHH:mm in local time (browser)
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  const hh = String(d.getHours()).padStart(2,"0");
+  const mm = String(d.getMinutes()).padStart(2,"0");
+  return `${y}-${m}-${day}T${hh}:${mm}`;
 }
 
 function pickNotice(payload){
@@ -212,7 +230,6 @@ function verdictForNsw(latBand, kVal){
   if (kVal >= 8) return ["MAYBE", "Very high K — NSW can be possible under dark skies."];
   return ["NO", "Most events stay too far south for NSW."];
 }
-
 function verdictForTas(latBand, kVal){
   if (latBand === "high" || latBand === "mid" || latBand === "low" || latBand === "equatorial") {
     return ["GO", `${latBand} band — Tasmania has the best odds in Australia (clear skies needed).`];
@@ -265,8 +282,6 @@ function initMap() {
   });
 
   spotMap.fitBounds(group.getBounds().pad(0.18));
-
-  // Important: after CSS grid sizing, force Leaflet to recalc map size
   setTimeout(() => spotMap.invalidateSize(), 0);
 }
 
@@ -346,8 +361,72 @@ function setPlaces(){
   places.innerHTML = `<ul>${items}</ul>`;
 }
 
+/* =======================
+   Plan logic
+   ======================= */
+function rollingBestWindow(hourly, hours=2) {
+  // Picks the lowest average cloud window within the next ~12 hours (or as available).
+  const times = hourly.time;
+  const clouds = hourly.cloudcover;
+  if (!times?.length || !clouds?.length) return null;
+
+  const now = new Date();
+  const startIdx = Math.max(0, times.findIndex(t => new Date(t) >= now));
+  const endIdx = Math.min(times.length, startIdx + 12); // keep it relevant
+
+  let best = null;
+  for (let i = startIdx; i + hours <= endIdx; i++) {
+    const slice = clouds.slice(i, i + hours);
+    const avg = slice.reduce((a,b)=>a+b,0) / slice.length;
+    if (!best || avg < best.avg) {
+      best = { avg: Math.round(avg), start: times[i], end: times[i + hours - 1] };
+    }
+  }
+  return best;
+}
+
+async function computeBestSpotAndWindow() {
+  // Fetch clouds for all spots on-demand.
+  const results = await Promise.all(SPOTS.map(async (s, idx) => {
+    try {
+      const cloud = await loadCloud(s.lat, s.lon);
+      const hourly = cloud.hourly;
+      if (!hourly?.time?.length) return null;
+
+      // Average next 6 hours (simple)
+      const now = new Date();
+      const start = Math.max(0, hourly.time.findIndex(t => new Date(t) >= now));
+      const end = Math.min(hourly.cloudcover.length, start + 6);
+      const slice = hourly.cloudcover.slice(start, end);
+      const avg6 = slice.length ? Math.round(slice.reduce((a,b)=>a+b,0) / slice.length) : 999;
+
+      // Best 2-hour window soon
+      const best2 = rollingBestWindow(hourly, 2);
+
+      return { idx, spot: s, avg6, best2 };
+    } catch {
+      return null;
+    }
+  }));
+
+  const valid = results.filter(Boolean);
+  if (!valid.length) return null;
+
+  valid.sort((a,b) => a.avg6 - b.avg6);
+  return valid[0];
+}
+
+/* =======================
+   Main
+   ======================= */
 async function main(){
   const sel = document.getElementById("spot");
+  const planBtn = document.getElementById("planBtn");
+  const planUseBestBtn = document.getElementById("planUseBestBtn");
+  const planStatus = document.getElementById("planStatus");
+  const planHint = document.getElementById("planHint");
+  const planOut = document.getElementById("planOut");
+
   SPOTS.forEach((s, i) => {
     const opt = document.createElement("option");
     opt.value = String(i);
@@ -388,6 +467,21 @@ async function main(){
   document.getElementById("verdictTas").textContent = tVerdict;
   document.getElementById("reasonTas").textContent = tReason;
 
+  // Plan button gating
+  if (nVerdict === "GO") {
+    planStatus.textContent = "GO";
+    planHint.textContent = "Conditions look unusually good for NSW. Build the plan and go if clouds cooperate.";
+    planBtn.disabled = false;
+  } else if (nVerdict === "MAYBE") {
+    planStatus.textContent = "MAYBE";
+    planHint.textContent = "Worth a try if you can get to a dark southern horizon and clouds are low.";
+    planBtn.disabled = false;
+  } else {
+    planStatus.textContent = "WAIT";
+    planHint.textContent = "Not worth a dedicated trip right now. This button will unlock when NSW flips to MAYBE/GO.";
+    planBtn.disabled = true;
+  }
+
   renderKChart(bom.k_last_72h || []);
 
   async function refreshCloud(){
@@ -418,6 +512,79 @@ async function main(){
 
   sel.addEventListener("change", refreshCloud);
   await refreshCloud();
+
+  // Build plan on click
+  let bestPlan = null;
+
+  planBtn.addEventListener("click", async () => {
+    planBtn.disabled = true;
+    planBtn.textContent = "Building…";
+    planOut.style.display = "none";
+    planOut.innerHTML = "";
+
+    try {
+      bestPlan = await computeBestSpotAndWindow();
+      if (!bestPlan) throw new Error("Could not fetch cloud data for spots.");
+
+      const s = bestPlan.spot;
+      const links = mapsLinks(s.lat, s.lon, s.name);
+
+      const best2 = bestPlan.best2;
+      const windowText = best2
+        ? `<strong>Best 2-hour window (lowest clouds soon):</strong> ${best2.start.replace("T"," ").slice(0,16)} → ${best2.end.replace("T"," ").slice(0,16)} (Sydney) · ~${best2.avg}% cloud`
+        : `<strong>Best window:</strong> Use the cloud chart + aim for 9pm–2am (Sydney).`;
+
+      planOut.innerHTML = `
+        <div><strong>Recommended spot:</strong> ${s.name}</div>
+        <div class="muted">${s.meta}</div>
+        <div style="margin-top:8px;">${windowText}</div>
+
+        <div class="btnRow" style="margin-top:10px;">
+          <a href="${links.google}" target="_blank" rel="noopener"><button>Directions (Google)</button></a>
+          <a href="${links.apple}" target="_blank" rel="noopener"><button>Directions (Apple)</button></a>
+        </div>
+
+        <div style="margin-top:12px;">
+          <strong>Do this when you arrive</strong>
+          <ul>
+            <li>Face <strong>south</strong> over the ocean. Give your eyes 5–10 min to adjust.</li>
+            <li>Use your phone camera in Night Mode (or 2–5s exposure if available).</li>
+            <li>If nothing appears, wait 15–20 min—aurora comes in bursts.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:10px;">
+          <strong>Pack list</strong>
+          <ul>
+            <li>Warm layer + water</li>
+            <li>Phone tripod / something to steady the phone</li>
+            <li>Mozzie spray</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:10px;" class="muted">
+          Tip: if the Moon is bright, move later (darker is better). If haze/sea mist rolls in, switch to another spot.
+        </div>
+      `;
+
+      planOut.style.display = "block";
+      planUseBestBtn.disabled = false;
+      planBtn.textContent = "Rebuild plan";
+      planBtn.disabled = false;
+
+    } catch (e) {
+      planOut.innerHTML = `<div class="muted">Plan error: ${e.message}</div>`;
+      planOut.style.display = "block";
+      planBtn.textContent = "Build tonight’s plan";
+      planBtn.disabled = (document.getElementById("verdictNsw").textContent === "NO");
+    }
+  });
+
+  planUseBestBtn.addEventListener("click", () => {
+    if (!bestPlan) return;
+    sel.value = String(bestPlan.idx);
+    sel.dispatchEvent(new Event("change"));
+  });
 }
 
 main().catch(err => {
@@ -427,4 +594,3 @@ main().catch(err => {
 </script>
 </body>
 </html>
-
