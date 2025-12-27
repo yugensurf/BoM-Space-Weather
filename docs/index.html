@@ -24,27 +24,24 @@
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 22px; max-width: 980px; }
     h1 { margin: 0 0 6px; }
     .sub { color: #666; font-size: 12px; margin-bottom: 14px; }
+
+    /* GRID: explicit columns so we can control spanning */
     .grid {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: 1fr; /* mobile */
-}
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr; /* mobile */
+    }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 960px) {
+      .grid { grid-template-columns: repeat(4, 1fr); }
+      /* On desktop: map spans cols 2-4, so its right edge aligns with the BoM card */
+      .mapCard { grid-column: 2 / -1; }
+    }
+    /* On smaller screens: map takes full width */
+    .mapCard { grid-column: 1 / -1; }
 
-/* tablet */
-@media (min-width: 720px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-/* desktop */
-@media (min-width: 960px) {
-  .grid { grid-template-columns: repeat(4, 1fr); }
-
-  /* Make the map card start under column 2 and span to the end (aligns with the right edge of BoM card) */
-  .mapCard { grid-column: 2 / -1; }
-}
-
-/* default behaviour for smaller screens */
-.mapCard { grid-column: 1 / -1; }
     .card { border: 1px solid #e6e6e6; border-radius: 14px; padding: 14px; }
     .k { font-size: 12px; color: #666; }
     .big { font-size: 26px; font-weight: 750; margin-top: 6px; }
@@ -58,7 +55,7 @@
 
     /* Map + help section */
     #spotMap {
-      height: 320px;
+      height: 380px; /* taller so it feels less cramped */
       border-radius: 12px;
       overflow: hidden;
       margin-top: 10px;
@@ -108,7 +105,8 @@
       <div class="k" id="cloudWhen"></div>
     </div>
 
-    <div class="card">
+    <!-- mapCard makes this span wider on desktop (cols 2-4) -->
+    <div class="card mapCard">
       <div class="k">Easy car-access options (south of Sydney)</div>
       <div id="spotMap" aria-label="Map of viewing spots"></div>
       <div class="k" style="margin-top:8px;">
@@ -138,7 +136,7 @@
         <ul>
           <li>Higher = stronger geomagnetic activity.</li>
           <li><strong>Tasmania</strong> can work at lower values than NSW.</li>
-          <li><strong>NSW</strong> usually needs a rare event (often a very high spike) plus clear skies and dark horizon.</li>
+          <li><strong>NSW</strong> usually needs a rare event plus clear skies and a dark southern horizon.</li>
         </ul>
       </div>
 
@@ -153,11 +151,11 @@
       <div>
         <div class="k"><strong>4) If it says GO / MAYBE — do this</strong></div>
         <ul>
-          <li>Pick the spot with the <strong>lowest cloud</strong> + the cleanest <strong>southern horizon</strong>.</li>
+          <li>Pick the spot with the <strong>lowest cloud</strong> + cleanest <strong>southern horizon</strong>.</li>
           <li>Go during <strong>9pm–2am</strong> (often best nearer midnight).</li>
           <li>Bring: warm layer, phone tripod, and be ready for “on/off” bursts.</li>
           <li>Moon: darker is better. Check your weather app for <strong>moonrise/moonset</strong> and <strong>illumination</strong>.</li>
-          <li>Safety: stay on public access areas; obey signs and any park gate rules.</li>
+          <li>Safety: public access areas only; obey signs and any gate rules.</li>
         </ul>
       </div>
     </div>
@@ -196,15 +194,12 @@ const SPOTS = [
   }
 ];
 
-function pad(n){ return String(n).padStart(2,"0"); }
 function fmtSydneyFromUtcString(utcStr){
-  // utcStr is "YYYY-MM-DD HH:mm:ss" (UTC)
   const iso = utcStr.replace(" ","T") + "Z";
   return new Date(iso).toLocaleString("en-AU", { timeZone: "Australia/Sydney" });
 }
 
 function pickNotice(payload){
-  // Preference: alert > watch > outlook
   if (payload.aurora.alert && payload.aurora.alert.length) return { type: "Alert", obj: payload.aurora.alert[0] };
   if (payload.aurora.watch && payload.aurora.watch.length) return { type: "Watch", obj: payload.aurora.watch[0] };
   if (payload.aurora.outlook && payload.aurora.outlook.length) return { type: "Outlook", obj: payload.aurora.outlook[0] };
@@ -212,7 +207,6 @@ function pickNotice(payload){
 }
 
 function verdictForNsw(latBand, kVal){
-  // Simple heuristic: NSW usually needs "low" or "equatorial" bands OR very high K.
   if (latBand === "equatorial") return ["GO", "Equatorial band (very rare) — NSW should be possible if skies are clear."];
   if (latBand === "low") return ["MAYBE", "Low band — try south-facing coast away from city lights if skies are clear."];
   if (kVal >= 8) return ["MAYBE", "Very high K — NSW can be possible under dark skies."];
@@ -247,8 +241,6 @@ function mapsLinks(lat, lon, label) {
 function initMap() {
   const el = document.getElementById("spotMap");
   if (!el || typeof L === "undefined") return;
-
-  // Create once
   if (spotMap) return;
 
   spotMap = L.map(el, { scrollWheelZoom: false });
@@ -273,6 +265,9 @@ function initMap() {
   });
 
   spotMap.fitBounds(group.getBounds().pad(0.18));
+
+  // Important: after CSS grid sizing, force Leaflet to recalc map size
+  setTimeout(() => spotMap.invalidateSize(), 0);
 }
 
 function focusSpotOnMap(i) {
@@ -292,7 +287,6 @@ async function loadBom(){
 }
 
 async function loadCloud(lat, lon){
-  // Open-Meteo Forecast API (hourly cloudcover).
   const url = new URL("https://api.open-meteo.com/v1/forecast");
   url.searchParams.set("latitude", lat);
   url.searchParams.set("longitude", lon);
@@ -309,7 +303,7 @@ async function loadCloud(lat, lon){
    ======================= */
 function renderKChart(points){
   const ctx = document.getElementById("kChart");
-  const labels = points.map(p => fmtSydneyFromUtcString(p.valid_time_utc).slice(0, -3)); // trim seconds
+  const labels = points.map(p => fmtSydneyFromUtcString(p.valid_time_utc).slice(0, -3));
   const values = points.map(p => p.index);
 
   if (kChart) kChart.destroy();
@@ -322,7 +316,7 @@ function renderKChart(points){
 
 function renderCloudChart(hourly){
   const ctx = document.getElementById("cloudChart");
-  const labels = hourly.time.map(t => t.replace("T"," ").slice(5,16)); // MM-DD HH:mm
+  const labels = hourly.time.map(t => t.replace("T"," ").slice(5,16));
   const values = hourly.cloudcover;
 
   if (cloudChart) cloudChart.destroy();
@@ -353,7 +347,6 @@ function setPlaces(){
 }
 
 async function main(){
-  // Populate dropdown
   const sel = document.getElementById("spot");
   SPOTS.forEach((s, i) => {
     const opt = document.createElement("option");
@@ -363,9 +356,8 @@ async function main(){
   });
 
   setPlaces();
-  initMap(); // map appears immediately
+  initMap();
 
-  // Load BoM data
   const bom = await loadBom();
   document.getElementById("updated").textContent = `Updated (UTC): ${bom.generated_at_utc}`;
 
@@ -403,14 +395,12 @@ async function main(){
     const spot = SPOTS[spotIndex];
     document.getElementById("spotMeta").textContent = spot.meta;
 
-    // Focus map + open marker
     focusSpotOnMap(spotIndex);
 
     const cloud = await loadCloud(spot.lat, spot.lon);
     const hourly = cloud.hourly;
     if (!hourly || !hourly.time || !hourly.cloudcover) return;
 
-    // next 6 hours average from "now"
     const now = new Date();
     const idx = hourly.time.findIndex(t => new Date(t) >= now);
     const start = Math.max(0, idx);
@@ -437,3 +427,4 @@ main().catch(err => {
 </script>
 </body>
 </html>
+
