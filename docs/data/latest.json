@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2025-12-31 23:39:10",
+  "generated_at_utc": "2026-01-01 01:21:28",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2025-12-29 00:00:00",
-      "analysis_time_utc": "2025-12-30 00:17:14",
-      "index": 2
-    },
     {
       "valid_time_utc": "2025-12-29 03:00:00",
       "analysis_time_utc": "2025-12-30 00:17:14",
@@ -83,63 +78,58 @@
     },
     {
       "valid_time_utc": "2025-12-31 00:00:00",
-      "analysis_time_utc": "2025-12-31 23:29:28",
+      "analysis_time_utc": "2026-01-01 00:17:13",
       "index": 2
     },
     {
       "valid_time_utc": "2025-12-31 03:00:00",
-      "analysis_time_utc": "2025-12-31 23:29:28",
+      "analysis_time_utc": "2026-01-01 00:17:13",
       "index": 2
     },
     {
       "valid_time_utc": "2025-12-31 06:00:00",
-      "analysis_time_utc": "2025-12-31 23:29:28",
+      "analysis_time_utc": "2026-01-01 00:17:13",
       "index": 3
     },
     {
       "valid_time_utc": "2025-12-31 09:00:00",
-      "analysis_time_utc": "2025-12-31 23:29:28",
+      "analysis_time_utc": "2026-01-01 00:17:13",
       "index": 2
     },
     {
       "valid_time_utc": "2025-12-31 12:00:00",
-      "analysis_time_utc": "2025-12-31 23:29:28",
+      "analysis_time_utc": "2026-01-01 00:17:13",
       "index": 4
     },
     {
       "valid_time_utc": "2025-12-31 15:00:00",
-      "analysis_time_utc": "2025-12-31 23:29:28",
+      "analysis_time_utc": "2026-01-01 00:17:13",
       "index": 2
     },
     {
       "valid_time_utc": "2025-12-31 18:00:00",
-      "analysis_time_utc": "2025-12-31 23:29:28",
+      "analysis_time_utc": "2026-01-01 00:17:13",
       "index": 1
     },
     {
       "valid_time_utc": "2025-12-31 21:00:00",
-      "analysis_time_utc": "2025-12-31 23:29:28",
+      "analysis_time_utc": "2026-01-01 00:17:13",
+      "index": 1
+    },
+    {
+      "valid_time_utc": "2026-01-01 00:00:00",
+      "analysis_time_utc": "2026-01-01 01:18:08",
       "index": 1
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2025-12-31 21:00:00",
-    "analysis_time_utc": "2025-12-31 23:29:28",
+    "valid_time_utc": "2026-01-01 00:00:00",
+    "analysis_time_utc": "2026-01-01 01:18:08",
     "index": 1
   },
   "aurora": {
     "alert": [],
     "watch": [],
-    "outlook": [
-      {
-        "issue_time": "2025-12-29 06:38:26",
-        "start_date": "2025-12-31",
-        "end_date": "2025-12-31",
-        "cause": "CME",
-        "k_aus": null,
-        "lat_band": "high",
-        "comments": "A component of a coronal mass ejection has been modelled to reach the Earth on 31-Dec, possibly resulting in geomagnetic storm activity and visible auroras during local nighttime hours only for the southern Australian region."
-      }
-    ]
+    "outlook": []
   }
 }
