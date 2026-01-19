@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-01-19 20:17:59",
+  "generated_at_utc": "2026-01-19 20:44:03",
   "k_last_72h": [
     {
       "valid_time_utc": "2026-01-16 21:00:00",
@@ -88,47 +88,55 @@
     },
     {
       "valid_time_utc": "2026-01-19 00:00:00",
-      "analysis_time_utc": "2026-01-19 20:14:20",
+      "analysis_time_utc": "2026-01-19 20:38:09",
       "index": 2
     },
     {
       "valid_time_utc": "2026-01-19 03:00:00",
-      "analysis_time_utc": "2026-01-19 20:14:20",
+      "analysis_time_utc": "2026-01-19 20:38:09",
       "index": 1
     },
     {
       "valid_time_utc": "2026-01-19 06:00:00",
-      "analysis_time_utc": "2026-01-19 20:14:20",
+      "analysis_time_utc": "2026-01-19 20:38:09",
       "index": 1
     },
     {
       "valid_time_utc": "2026-01-19 09:00:00",
-      "analysis_time_utc": "2026-01-19 20:14:20",
+      "analysis_time_utc": "2026-01-19 20:38:09",
       "index": 2
     },
     {
       "valid_time_utc": "2026-01-19 12:00:00",
-      "analysis_time_utc": "2026-01-19 20:14:20",
+      "analysis_time_utc": "2026-01-19 20:38:09",
       "index": 1
     },
     {
       "valid_time_utc": "2026-01-19 15:00:00",
-      "analysis_time_utc": "2026-01-19 20:14:20",
+      "analysis_time_utc": "2026-01-19 20:38:09",
       "index": 3
     },
     {
       "valid_time_utc": "2026-01-19 18:00:00",
-      "analysis_time_utc": "2026-01-19 20:14:20",
+      "analysis_time_utc": "2026-01-19 20:38:09",
       "index": 7
     }
   ],
   "latest_k": {
     "valid_time_utc": "2026-01-19 18:00:00",
-    "analysis_time_utc": "2026-01-19 20:14:20",
+    "analysis_time_utc": "2026-01-19 20:38:09",
     "index": 7
   },
   "aurora": {
-    "alert": [],
+    "alert": [
+      {
+        "start_time": "2026-01-19 20:23:02",
+        "valid_until": "2026-01-20 08:23:02",
+        "kaus": "7",
+        "lat_band": "mid",
+        "description": "SEVERE GEOMAGNETIC STORM IN PROGRESS. AURORA MAY BE OBSERVED DURING LOCAL NIGHT TIME HOURS IN GOOD OBSERVING CONDITIONS AT REGIONS AS FAR EQUATORWARD AS MIDDLE LATITUDES."
+      }
+    ],
     "watch": [
       {
         "issue_time": "2026-01-19 04:51:58",
