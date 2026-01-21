@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-01-21 13:41:07",
+  "generated_at_utc": "2026-01-21 14:25:13",
   "k_last_72h": [
     {
       "valid_time_utc": "2026-01-18 15:00:00",
@@ -98,12 +98,12 @@
     },
     {
       "valid_time_utc": "2026-01-21 00:00:00",
-      "analysis_time_utc": "2026-01-21 13:35:22",
+      "analysis_time_utc": "2026-01-21 14:20:21",
       "index": 5
     },
     {
       "valid_time_utc": "2026-01-21 03:00:00",
-      "analysis_time_utc": "2026-01-21 13:35:22",
+      "analysis_time_utc": "2026-01-21 14:20:21",
       "index": 4
     },
     {
