@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-02-21 23:44:44",
+  "generated_at_utc": "2026-02-22 01:42:55",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-02-19 00:00:00",
-      "analysis_time_utc": "2026-02-20 00:08:14",
-      "index": 2
-    },
     {
       "valid_time_utc": "2026-02-19 03:00:00",
       "analysis_time_utc": "2026-02-20 00:08:14",
@@ -83,49 +78,54 @@
     },
     {
       "valid_time_utc": "2026-02-21 00:00:00",
-      "analysis_time_utc": "2026-02-21 23:38:09",
+      "analysis_time_utc": "2026-02-22 00:17:13",
       "index": 3
     },
     {
       "valid_time_utc": "2026-02-21 03:00:00",
-      "analysis_time_utc": "2026-02-21 23:38:09",
+      "analysis_time_utc": "2026-02-22 00:17:13",
       "index": 3
     },
     {
       "valid_time_utc": "2026-02-21 06:00:00",
-      "analysis_time_utc": "2026-02-21 23:38:09",
+      "analysis_time_utc": "2026-02-22 00:17:13",
       "index": 3
     },
     {
       "valid_time_utc": "2026-02-21 09:00:00",
-      "analysis_time_utc": "2026-02-21 23:38:09",
+      "analysis_time_utc": "2026-02-22 00:17:13",
       "index": 3
     },
     {
       "valid_time_utc": "2026-02-21 12:00:00",
-      "analysis_time_utc": "2026-02-21 23:38:09",
+      "analysis_time_utc": "2026-02-22 00:17:13",
       "index": 2
     },
     {
       "valid_time_utc": "2026-02-21 15:00:00",
-      "analysis_time_utc": "2026-02-21 23:38:09",
+      "analysis_time_utc": "2026-02-22 00:17:13",
       "index": 2
     },
     {
       "valid_time_utc": "2026-02-21 18:00:00",
-      "analysis_time_utc": "2026-02-21 23:38:09",
+      "analysis_time_utc": "2026-02-22 00:17:13",
       "index": 3
     },
     {
       "valid_time_utc": "2026-02-21 21:00:00",
-      "analysis_time_utc": "2026-02-21 23:38:09",
+      "analysis_time_utc": "2026-02-22 00:17:13",
       "index": 4
+    },
+    {
+      "valid_time_utc": "2026-02-22 00:00:00",
+      "analysis_time_utc": "2026-02-22 01:38:07",
+      "index": 3
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-02-21 21:00:00",
-    "analysis_time_utc": "2026-02-21 23:38:09",
-    "index": 4
+    "valid_time_utc": "2026-02-22 00:00:00",
+    "analysis_time_utc": "2026-02-22 01:38:07",
+    "index": 3
   },
   "aurora": {
     "alert": [],
