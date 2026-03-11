@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-03-11 11:55:35",
+  "generated_at_utc": "2026-03-11 12:50:57",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-03-08 12:00:00",
-      "analysis_time_utc": "2026-03-09 00:17:13",
-      "index": 3
-    },
     {
       "valid_time_utc": "2026-03-08 15:00:00",
       "analysis_time_utc": "2026-03-09 00:17:13",
@@ -103,29 +98,34 @@
     },
     {
       "valid_time_utc": "2026-03-11 00:00:00",
-      "analysis_time_utc": "2026-03-11 11:50:19",
+      "analysis_time_utc": "2026-03-11 12:48:09",
       "index": 2
     },
     {
       "valid_time_utc": "2026-03-11 03:00:00",
-      "analysis_time_utc": "2026-03-11 11:50:19",
+      "analysis_time_utc": "2026-03-11 12:48:09",
       "index": 3
     },
     {
       "valid_time_utc": "2026-03-11 06:00:00",
-      "analysis_time_utc": "2026-03-11 11:50:19",
+      "analysis_time_utc": "2026-03-11 12:48:09",
       "index": 2
     },
     {
       "valid_time_utc": "2026-03-11 09:00:00",
-      "analysis_time_utc": "2026-03-11 11:50:19",
-      "index": 1
+      "analysis_time_utc": "2026-03-11 12:48:09",
+      "index": 2
+    },
+    {
+      "valid_time_utc": "2026-03-11 12:00:00",
+      "analysis_time_utc": "2026-03-11 12:48:09",
+      "index": 2
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-03-11 09:00:00",
-    "analysis_time_utc": "2026-03-11 11:50:19",
-    "index": 1
+    "valid_time_utc": "2026-03-11 12:00:00",
+    "analysis_time_utc": "2026-03-11 12:48:09",
+    "index": 2
   },
   "aurora": {
     "alert": [],
