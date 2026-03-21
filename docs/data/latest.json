@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-03-21 11:43:26",
+  "generated_at_utc": "2026-03-21 12:35:15",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-03-18 12:00:00",
-      "analysis_time_utc": "2026-03-19 00:17:13",
-      "index": 0
-    },
     {
       "valid_time_utc": "2026-03-18 15:00:00",
       "analysis_time_utc": "2026-03-19 00:17:13",
@@ -103,35 +98,40 @@
     },
     {
       "valid_time_utc": "2026-03-21 00:00:00",
-      "analysis_time_utc": "2026-03-21 11:38:08",
+      "analysis_time_utc": "2026-03-21 12:29:20",
       "index": 5
     },
     {
       "valid_time_utc": "2026-03-21 03:00:00",
-      "analysis_time_utc": "2026-03-21 11:38:08",
+      "analysis_time_utc": "2026-03-21 12:29:20",
       "index": 5
     },
     {
       "valid_time_utc": "2026-03-21 06:00:00",
-      "analysis_time_utc": "2026-03-21 11:38:08",
+      "analysis_time_utc": "2026-03-21 12:29:20",
       "index": 4
     },
     {
       "valid_time_utc": "2026-03-21 09:00:00",
-      "analysis_time_utc": "2026-03-21 11:38:08",
+      "analysis_time_utc": "2026-03-21 12:29:20",
       "index": 4
+    },
+    {
+      "valid_time_utc": "2026-03-21 12:00:00",
+      "analysis_time_utc": "2026-03-21 12:29:20",
+      "index": 2
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-03-21 09:00:00",
-    "analysis_time_utc": "2026-03-21 11:38:08",
-    "index": 4
+    "valid_time_utc": "2026-03-21 12:00:00",
+    "analysis_time_utc": "2026-03-21 12:29:20",
+    "index": 2
   },
   "aurora": {
     "alert": [
       {
-        "start_time": "2026-03-21 11:23:01",
-        "valid_until": "2026-03-21 23:23:01",
+        "start_time": "2026-03-21 12:23:02",
+        "valid_until": "2026-03-22 00:23:02",
         "kaus": "6",
         "lat_band": "high",
         "description": "GEOMAGNETIC STORM IN PROGRESS. AURORA MAY BE OBSERVED DURING LOCAL NIGHT TIME HOURS IN GOOD OBSERVING CONDITIONS AT HIGH LATITUDES."
