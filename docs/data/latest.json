@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-03-20 23:49:57",
+  "generated_at_utc": "2026-03-21 01:25:05",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-03-18 00:00:00",
-      "analysis_time_utc": "2026-03-19 00:17:13",
-      "index": 1
-    },
     {
       "valid_time_utc": "2026-03-18 03:00:00",
       "analysis_time_utc": "2026-03-19 00:17:13",
@@ -83,63 +78,58 @@
     },
     {
       "valid_time_utc": "2026-03-20 00:00:00",
-      "analysis_time_utc": "2026-03-20 23:44:20",
+      "analysis_time_utc": "2026-03-21 00:08:11",
       "index": 2
     },
     {
       "valid_time_utc": "2026-03-20 03:00:00",
-      "analysis_time_utc": "2026-03-20 23:44:20",
+      "analysis_time_utc": "2026-03-21 00:08:11",
       "index": 3
     },
     {
       "valid_time_utc": "2026-03-20 06:00:00",
-      "analysis_time_utc": "2026-03-20 23:44:20",
+      "analysis_time_utc": "2026-03-21 00:08:11",
       "index": 3
     },
     {
       "valid_time_utc": "2026-03-20 09:00:00",
-      "analysis_time_utc": "2026-03-20 23:44:20",
+      "analysis_time_utc": "2026-03-21 00:08:11",
       "index": 4
     },
     {
       "valid_time_utc": "2026-03-20 12:00:00",
-      "analysis_time_utc": "2026-03-20 23:44:20",
+      "analysis_time_utc": "2026-03-21 00:08:11",
       "index": 3
     },
     {
       "valid_time_utc": "2026-03-20 15:00:00",
-      "analysis_time_utc": "2026-03-20 23:44:20",
+      "analysis_time_utc": "2026-03-21 00:08:11",
       "index": 3
     },
     {
       "valid_time_utc": "2026-03-20 18:00:00",
-      "analysis_time_utc": "2026-03-20 23:44:20",
+      "analysis_time_utc": "2026-03-21 00:08:11",
       "index": 4
     },
     {
       "valid_time_utc": "2026-03-20 21:00:00",
-      "analysis_time_utc": "2026-03-20 23:44:20",
+      "analysis_time_utc": "2026-03-21 00:08:11",
+      "index": 5
+    },
+    {
+      "valid_time_utc": "2026-03-21 00:00:00",
+      "analysis_time_utc": "2026-03-21 01:18:08",
       "index": 5
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-03-20 21:00:00",
-    "analysis_time_utc": "2026-03-20 23:44:20",
+    "valid_time_utc": "2026-03-21 00:00:00",
+    "analysis_time_utc": "2026-03-21 01:18:08",
     "index": 5
   },
   "aurora": {
     "alert": [],
-    "watch": [
-      {
-        "issue_time": "2026-03-18 20:18:40",
-        "start_date": "2026-03-19",
-        "end_date": "2026-03-20",
-        "cause": "CME",
-        "k_aus": "5",
-        "lat_band": "high",
-        "comments": "A coronal mass ejection is expected to impact the Earth within the next 48 hours, possibly resulting in significant geomagnetic activity and visible auroras during local nighttime hours. Aurora alerts will follow if significant geomagnetic activity actually occurs."
-      }
-    ],
+    "watch": [],
     "outlook": []
   }
 }
