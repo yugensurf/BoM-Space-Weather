@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-23 04:23:53",
+  "generated_at_utc": "2026-03-23 05:52:34",
   "k_last_72h": [
     {
       "valid_time_utc": "2026-03-20 06:00:00",
@@ -113,25 +113,25 @@
     },
     {
       "valid_time_utc": "2026-03-23 00:00:00",
-      "analysis_time_utc": "2026-03-23 04:18:08",
+      "analysis_time_utc": "2026-03-23 05:48:08",
       "index": 3
     },
     {
       "valid_time_utc": "2026-03-23 03:00:00",
-      "analysis_time_utc": "2026-03-23 04:18:08",
+      "analysis_time_utc": "2026-03-23 05:48:08",
       "index": 2
     }
   ],
   "latest_k": {
     "valid_time_utc": "2026-03-23 03:00:00",
-    "analysis_time_utc": "2026-03-23 04:18:08",
+    "analysis_time_utc": "2026-03-23 05:48:08",
     "index": 2
   },
   "aurora": {
     "alert": [
       {
-        "start_time": "2026-03-23 04:23:02",
-        "valid_until": "2026-03-23 16:23:02",
+        "start_time": "2026-03-23 05:23:02",
+        "valid_until": "2026-03-23 17:23:02",
         "kaus": "6",
         "lat_band": "high",
         "description": "GEOMAGNETIC STORM IN PROGRESS. AURORA MAY BE OBSERVED DURING LOCAL NIGHT TIME HOURS IN GOOD OBSERVING CONDITIONS AT HIGH LATITUDES."
