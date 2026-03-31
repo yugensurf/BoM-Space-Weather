@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-31 06:16:08",
+  "generated_at_utc": "2026-03-31 07:48:59",
   "k_last_72h": [
     {
       "valid_time_utc": "2026-03-28 09:00:00",
@@ -108,28 +108,38 @@
     },
     {
       "valid_time_utc": "2026-03-31 00:00:00",
-      "analysis_time_utc": "2026-03-31 06:14:12",
+      "analysis_time_utc": "2026-03-31 07:44:13",
       "index": 1
     },
     {
       "valid_time_utc": "2026-03-31 03:00:00",
-      "analysis_time_utc": "2026-03-31 06:14:12",
+      "analysis_time_utc": "2026-03-31 07:44:13",
       "index": 2
     },
     {
       "valid_time_utc": "2026-03-31 06:00:00",
-      "analysis_time_utc": "2026-03-31 06:14:12",
-      "index": 0
+      "analysis_time_utc": "2026-03-31 07:44:13",
+      "index": 1
     }
   ],
   "latest_k": {
     "valid_time_utc": "2026-03-31 06:00:00",
-    "analysis_time_utc": "2026-03-31 06:14:12",
-    "index": 0
+    "analysis_time_utc": "2026-03-31 07:44:13",
+    "index": 1
   },
   "aurora": {
     "alert": [],
-    "watch": [],
+    "watch": [
+      {
+        "issue_time": "2026-03-31 06:24:32",
+        "start_date": "2026-03-31",
+        "end_date": "2026-04-01",
+        "cause": "CME",
+        "k_aus": "7",
+        "lat_band": "mid",
+        "comments": "A coronal mass ejection is expected to impact the Earth late tonight or after midnight. The resulting geomagnetic activity may result in aurorae, visible from the southern Australian region."
+      }
+    ],
     "outlook": []
   }
 }
