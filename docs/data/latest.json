@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-04-24 23:04:35",
+  "generated_at_utc": "2026-04-25 00:01:30",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-04-22 00:00:00",
-      "analysis_time_utc": "2026-04-23 00:17:16",
-      "index": 1
-    },
     {
       "valid_time_utc": "2026-04-22 03:00:00",
       "analysis_time_utc": "2026-04-23 00:17:16",
@@ -83,48 +78,48 @@
     },
     {
       "valid_time_utc": "2026-04-24 00:00:00",
-      "analysis_time_utc": "2026-04-24 22:59:27",
+      "analysis_time_utc": "2026-04-24 23:59:30",
       "index": 2
     },
     {
       "valid_time_utc": "2026-04-24 03:00:00",
-      "analysis_time_utc": "2026-04-24 22:59:27",
+      "analysis_time_utc": "2026-04-24 23:59:30",
       "index": 1
     },
     {
       "valid_time_utc": "2026-04-24 06:00:00",
-      "analysis_time_utc": "2026-04-24 22:59:27",
+      "analysis_time_utc": "2026-04-24 23:59:30",
       "index": 2
     },
     {
       "valid_time_utc": "2026-04-24 09:00:00",
-      "analysis_time_utc": "2026-04-24 22:59:27",
+      "analysis_time_utc": "2026-04-24 23:59:30",
       "index": 1
     },
     {
       "valid_time_utc": "2026-04-24 12:00:00",
-      "analysis_time_utc": "2026-04-24 22:59:27",
+      "analysis_time_utc": "2026-04-24 23:59:30",
       "index": 1
     },
     {
       "valid_time_utc": "2026-04-24 15:00:00",
-      "analysis_time_utc": "2026-04-24 22:59:27",
+      "analysis_time_utc": "2026-04-24 23:59:30",
       "index": 2
     },
     {
       "valid_time_utc": "2026-04-24 18:00:00",
-      "analysis_time_utc": "2026-04-24 22:59:27",
+      "analysis_time_utc": "2026-04-24 23:59:30",
       "index": 2
     },
     {
       "valid_time_utc": "2026-04-24 21:00:00",
-      "analysis_time_utc": "2026-04-24 22:59:27",
+      "analysis_time_utc": "2026-04-24 23:59:30",
       "index": 2
     }
   ],
   "latest_k": {
     "valid_time_utc": "2026-04-24 21:00:00",
-    "analysis_time_utc": "2026-04-24 22:59:27",
+    "analysis_time_utc": "2026-04-24 23:59:30",
     "index": 2
   },
   "aurora": {
