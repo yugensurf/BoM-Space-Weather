@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-05-30 20:31:33",
+  "generated_at_utc": "2026-05-30 21:55:19",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-05-27 21:00:00",
-      "analysis_time_utc": "2026-05-28 02:08:10",
-      "index": 2
-    },
     {
       "valid_time_utc": "2026-05-28 00:00:00",
       "analysis_time_utc": "2026-05-29 00:17:12",
@@ -88,44 +83,49 @@
     },
     {
       "valid_time_utc": "2026-05-30 00:00:00",
-      "analysis_time_utc": "2026-05-30 20:29:27",
+      "analysis_time_utc": "2026-05-30 21:50:27",
       "index": 2
     },
     {
       "valid_time_utc": "2026-05-30 03:00:00",
-      "analysis_time_utc": "2026-05-30 20:29:27",
+      "analysis_time_utc": "2026-05-30 21:50:27",
       "index": 2
     },
     {
       "valid_time_utc": "2026-05-30 06:00:00",
-      "analysis_time_utc": "2026-05-30 20:29:27",
+      "analysis_time_utc": "2026-05-30 21:50:27",
       "index": 1
     },
     {
       "valid_time_utc": "2026-05-30 09:00:00",
-      "analysis_time_utc": "2026-05-30 20:29:27",
+      "analysis_time_utc": "2026-05-30 21:50:27",
       "index": 1
     },
     {
       "valid_time_utc": "2026-05-30 12:00:00",
-      "analysis_time_utc": "2026-05-30 20:29:27",
+      "analysis_time_utc": "2026-05-30 21:50:27",
       "index": 1
     },
     {
       "valid_time_utc": "2026-05-30 15:00:00",
-      "analysis_time_utc": "2026-05-30 20:29:27",
+      "analysis_time_utc": "2026-05-30 21:50:27",
       "index": 2
     },
     {
       "valid_time_utc": "2026-05-30 18:00:00",
-      "analysis_time_utc": "2026-05-30 20:29:27",
+      "analysis_time_utc": "2026-05-30 21:50:27",
       "index": 3
+    },
+    {
+      "valid_time_utc": "2026-05-30 21:00:00",
+      "analysis_time_utc": "2026-05-30 21:50:27",
+      "index": 1
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-05-30 18:00:00",
-    "analysis_time_utc": "2026-05-30 20:29:27",
-    "index": 3
+    "valid_time_utc": "2026-05-30 21:00:00",
+    "analysis_time_utc": "2026-05-30 21:50:27",
+    "index": 1
   },
   "aurora": {
     "alert": [],
