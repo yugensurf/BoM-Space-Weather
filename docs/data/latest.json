@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-06-04 06:59:14",
+  "generated_at_utc": "2026-06-04 10:40:07",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-06-01 09:00:00",
-      "analysis_time_utc": "2026-06-02 00:17:13",
-      "index": 2
-    },
     {
       "valid_time_utc": "2026-06-01 12:00:00",
       "analysis_time_utc": "2026-06-02 00:17:13",
@@ -108,28 +103,43 @@
     },
     {
       "valid_time_utc": "2026-06-04 00:00:00",
-      "analysis_time_utc": "2026-06-04 06:50:19",
+      "analysis_time_utc": "2026-06-04 10:29:21",
       "index": 2
     },
     {
       "valid_time_utc": "2026-06-04 03:00:00",
-      "analysis_time_utc": "2026-06-04 06:50:19",
+      "analysis_time_utc": "2026-06-04 10:29:21",
       "index": 1
     },
     {
       "valid_time_utc": "2026-06-04 06:00:00",
-      "analysis_time_utc": "2026-06-04 06:50:19",
+      "analysis_time_utc": "2026-06-04 10:29:21",
+      "index": 0
+    },
+    {
+      "valid_time_utc": "2026-06-04 09:00:00",
+      "analysis_time_utc": "2026-06-04 10:29:21",
       "index": 0
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-06-04 06:00:00",
-    "analysis_time_utc": "2026-06-04 06:50:19",
+    "valid_time_utc": "2026-06-04 09:00:00",
+    "analysis_time_utc": "2026-06-04 10:29:21",
     "index": 0
   },
   "aurora": {
     "alert": [],
-    "watch": [],
+    "watch": [
+      {
+        "issue_time": "2026-06-04 07:29:24",
+        "start_date": "2026-06-04",
+        "end_date": "2026-06-05",
+        "cause": "CME",
+        "k_aus": "5",
+        "lat_band": "high",
+        "comments": "Several coronal mass ejections are expected to impact the Earth within the next 24-48 hours, possibly resulting in significant geomagnetic activity and visible auroras in far southern Victoria and Tasmania during local nighttime hours. Aurora alerts will follow if significant geomagnetic activity actually occurs."
+      }
+    ],
     "outlook": []
   }
 }
