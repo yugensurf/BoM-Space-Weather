@@ -1,16 +1,6 @@
 {
-  "generated_at_utc": "2026-06-08 01:38:47",
+  "generated_at_utc": "2026-06-08 06:37:23",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-06-05 03:00:00",
-      "analysis_time_utc": "2026-06-06 00:17:18",
-      "index": 4
-    },
-    {
-      "valid_time_utc": "2026-06-05 06:00:00",
-      "analysis_time_utc": "2026-06-06 00:17:18",
-      "index": 2
-    },
     {
       "valid_time_utc": "2026-06-05 09:00:00",
       "analysis_time_utc": "2026-06-06 00:17:18",
@@ -118,18 +108,38 @@
     },
     {
       "valid_time_utc": "2026-06-08 00:00:00",
-      "analysis_time_utc": "2026-06-08 01:29:15",
+      "analysis_time_utc": "2026-06-08 06:29:18",
+      "index": 2
+    },
+    {
+      "valid_time_utc": "2026-06-08 03:00:00",
+      "analysis_time_utc": "2026-06-08 06:29:18",
+      "index": 2
+    },
+    {
+      "valid_time_utc": "2026-06-08 06:00:00",
+      "analysis_time_utc": "2026-06-08 06:29:18",
       "index": 1
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-06-08 00:00:00",
-    "analysis_time_utc": "2026-06-08 01:29:15",
+    "valid_time_utc": "2026-06-08 06:00:00",
+    "analysis_time_utc": "2026-06-08 06:29:18",
     "index": 1
   },
   "aurora": {
     "alert": [],
-    "watch": [],
+    "watch": [
+      {
+        "issue_time": "2026-06-08 03:56:04",
+        "start_date": "2026-06-08",
+        "end_date": "2026-06-09",
+        "cause": "CME",
+        "k_aus": "5",
+        "lat_band": "high",
+        "comments": "A coronal mass ejection that left the Sun on 6-Jun is expected to arrive at Earth from 1300 UT on 8-Jun. This is expected to cause G2-G3 geomagnetic storming from mid 8-Jun onwards, or close to midnight in Australian timezones. This may cause auroras to be visible in southern parts of Australia on the night of 8-Jun into 9-Jun, such as in Tasmania, Victoria, and southern parts of South Australia, Western Australia and New South Wales."
+      }
+    ],
     "outlook": []
   }
 }
