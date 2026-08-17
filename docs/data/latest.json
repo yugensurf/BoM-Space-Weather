@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-08-17 20:51:00",
+  "generated_at_utc": "2026-08-17 21:19:09",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-08-14 21:00:00",
-      "analysis_time_utc": "2026-08-15 00:08:11",
-      "index": 1
-    },
     {
       "valid_time_utc": "2026-08-15 00:00:00",
       "analysis_time_utc": "2026-08-16 00:17:13",
@@ -88,44 +83,49 @@
     },
     {
       "valid_time_utc": "2026-08-17 00:00:00",
-      "analysis_time_utc": "2026-08-17 20:48:08",
+      "analysis_time_utc": "2026-08-17 21:14:21",
       "index": 1
     },
     {
       "valid_time_utc": "2026-08-17 03:00:00",
-      "analysis_time_utc": "2026-08-17 20:48:08",
+      "analysis_time_utc": "2026-08-17 21:14:21",
       "index": 1
     },
     {
       "valid_time_utc": "2026-08-17 06:00:00",
-      "analysis_time_utc": "2026-08-17 20:48:08",
+      "analysis_time_utc": "2026-08-17 21:14:21",
       "index": 1
     },
     {
       "valid_time_utc": "2026-08-17 09:00:00",
-      "analysis_time_utc": "2026-08-17 20:48:08",
+      "analysis_time_utc": "2026-08-17 21:14:21",
       "index": 1
     },
     {
       "valid_time_utc": "2026-08-17 12:00:00",
-      "analysis_time_utc": "2026-08-17 20:48:08",
+      "analysis_time_utc": "2026-08-17 21:14:21",
       "index": 1
     },
     {
       "valid_time_utc": "2026-08-17 15:00:00",
-      "analysis_time_utc": "2026-08-17 20:48:08",
+      "analysis_time_utc": "2026-08-17 21:14:21",
       "index": 2
     },
     {
       "valid_time_utc": "2026-08-17 18:00:00",
-      "analysis_time_utc": "2026-08-17 20:48:08",
-      "index": 1
+      "analysis_time_utc": "2026-08-17 21:14:21",
+      "index": 2
+    },
+    {
+      "valid_time_utc": "2026-08-17 21:00:00",
+      "analysis_time_utc": "2026-08-17 21:14:21",
+      "index": 2
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-08-17 18:00:00",
-    "analysis_time_utc": "2026-08-17 20:48:08",
-    "index": 1
+    "valid_time_utc": "2026-08-17 21:00:00",
+    "analysis_time_utc": "2026-08-17 21:14:21",
+    "index": 2
   },
   "aurora": {
     "alert": [],
