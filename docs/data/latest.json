@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-08-18 00:51:58",
+  "generated_at_utc": "2026-08-18 02:11:54",
   "k_last_72h": [
     {
       "valid_time_utc": "2026-08-15 03:00:00",
@@ -118,13 +118,13 @@
     },
     {
       "valid_time_utc": "2026-08-18 00:00:00",
-      "analysis_time_utc": "2026-08-18 00:48:07",
+      "analysis_time_utc": "2026-08-18 02:08:12",
       "index": 2
     }
   ],
   "latest_k": {
     "valid_time_utc": "2026-08-18 00:00:00",
-    "analysis_time_utc": "2026-08-18 00:48:07",
+    "analysis_time_utc": "2026-08-18 02:08:12",
     "index": 2
   },
   "aurora": {
