@@ -1,11 +1,6 @@
 {
-  "generated_at_utc": "2026-10-10 15:29:35",
+  "generated_at_utc": "2026-10-10 19:27:12",
   "k_last_72h": [
-    {
-      "valid_time_utc": "2026-10-07 18:00:00",
-      "analysis_time_utc": "2026-10-08 00:17:15",
-      "index": 2
-    },
     {
       "valid_time_utc": "2026-10-07 21:00:00",
       "analysis_time_utc": "2026-10-08 00:17:15",
@@ -93,42 +88,55 @@
     },
     {
       "valid_time_utc": "2026-10-10 00:00:00",
-      "analysis_time_utc": "2026-10-10 15:20:25",
+      "analysis_time_utc": "2026-10-10 19:20:27",
       "index": 2
     },
     {
       "valid_time_utc": "2026-10-10 03:00:00",
-      "analysis_time_utc": "2026-10-10 15:20:25",
+      "analysis_time_utc": "2026-10-10 19:20:27",
       "index": 2
     },
     {
       "valid_time_utc": "2026-10-10 06:00:00",
-      "analysis_time_utc": "2026-10-10 15:20:25",
+      "analysis_time_utc": "2026-10-10 19:20:27",
       "index": 2
     },
     {
       "valid_time_utc": "2026-10-10 09:00:00",
-      "analysis_time_utc": "2026-10-10 15:20:25",
+      "analysis_time_utc": "2026-10-10 19:20:27",
       "index": 2
     },
     {
       "valid_time_utc": "2026-10-10 12:00:00",
-      "analysis_time_utc": "2026-10-10 15:20:25",
+      "analysis_time_utc": "2026-10-10 19:20:27",
       "index": 4
     },
     {
       "valid_time_utc": "2026-10-10 15:00:00",
-      "analysis_time_utc": "2026-10-10 15:18:09",
-      "index": 1
+      "analysis_time_utc": "2026-10-10 19:20:27",
+      "index": 6
+    },
+    {
+      "valid_time_utc": "2026-10-10 18:00:00",
+      "analysis_time_utc": "2026-10-10 19:20:27",
+      "index": 5
     }
   ],
   "latest_k": {
-    "valid_time_utc": "2026-10-10 15:00:00",
-    "analysis_time_utc": "2026-10-10 15:18:09",
-    "index": 1
+    "valid_time_utc": "2026-10-10 18:00:00",
+    "analysis_time_utc": "2026-10-10 19:20:27",
+    "index": 5
   },
   "aurora": {
-    "alert": [],
+    "alert": [
+      {
+        "start_time": "2026-10-10 18:23:01",
+        "valid_until": "2026-10-11 06:23:01",
+        "kaus": "6",
+        "lat_band": "high",
+        "description": "GEOMAGNETIC STORM IN PROGRESS. AURORA MAY BE OBSERVED DURING LOCAL NIGHT TIME HOURS IN GOOD OBSERVING CONDITIONS AT HIGH LATITUDES."
+      }
+    ],
     "watch": [],
     "outlook": []
   }
